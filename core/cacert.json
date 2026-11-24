@@ -1,0 +1,16 @@
+{
+  "name": "cacert",
+  "version": "2026.11.05",
+  "title": "CA Certificate Bundle",
+  "author": "Mozilla",
+  "description": "TLS Root Certificates for HTTPS",
+  "details": "Provides cacert.pem for HTTPS/TLS.",
+  "license": "MPL-2.0",
+  "changelog": "2026.11.05: Mozilla CA store update (118 certificates).",
+  "category": "Miscellaneous",
+  "url": "https://curl.se/docs/caextract.html",
+  "path": "sdmc:/kaihen/lib/",
+  "source": "https://curl.se/ca/cacert-2026-11-05.pem",
+  "file": "cacert.pem",
+  "updated": "05/11/2026 04:12"
+}

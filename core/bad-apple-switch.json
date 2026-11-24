@@ -1,0 +1,15 @@
+{
+  "name": "bad-apple-switch",
+  "version": "1.0.0",
+  "title": "Bad Apple!! (Switch)",
+  "author": "souldbminerr",
+  "description": "Bad Apple!! for Switch 2.",
+  "details": "Bad Apple!! demo for Switch 2.",
+  "license": "GPLv2",
+  "changelog": "Ounce release.",
+  "category": "Fun",
+  "url": "https://github.com/souldbminerr/bad-apple-switch",
+  "source": "https://github.com/souldbminerr/bad-apple-switch/releases/download/bad_apple_ounce/bad-apple-switch.nro",
+  "file": "bad-apple-switch.nro",
+  "updated": "22/11/2026 21:21"
+}

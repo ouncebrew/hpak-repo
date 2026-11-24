@@ -1,0 +1,18 @@
+{
+  "name": "ouncefin",
+  "version": "1.0.0",
+  "title": "Ouncefin",
+  "author": "dragonflylee and Souldbminer",
+  "description": "A Jellyfin client for Switch 2!",
+  "details": "Ouncefin is a free and open source Jellyfin client for the Nintendo Switch 2.\n\nIt supports various features, including downloads, hardware accellerated decoding, mouse mode and more!",
+  "license": "Apache-2.0",
+  "changelog": "1.0.0: Initial release",
+  "category": "Apps",
+  "url": "https://github.com/souldbminerr/ouncefin",
+  "userDeletion": [
+    "sdmc:/switch/Switchfin/"
+  ],
+  "source": "https://github.com/souldbminerr/ouncefin/releases/download/v1.0.0-ounce/ouncefin.nro",
+  "file": "ouncefin.nro",
+  "updated": "20/11/2026 00:09"
+}

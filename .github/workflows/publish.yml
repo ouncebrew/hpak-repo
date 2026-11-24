@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: MIT
+#
+# Publishes the hpak repositories to https://hpak.ouncebrew.org (Cloudflare R2)
+# on a push to main that changes a package, and when run by hand. Pull requests
+# are checked: every package is validated and downloaded, nothing is uploaded.
+# Secret: CLOUDFLARE_API_TOKEN (R2 edit). Variables: CLOUDFLARE_ACCOUNT_ID,
+# R2_BUCKET.
+name: Publish
+
+on:
+  push:
+    branches: [main]
+    paths: [core/**, community/**, repos.json, tools/**]
+  pull_request:
+  workflow_dispatch:
+
+# One publish at a time: each one rewrites the indexes.
+concurrency:
+  group: publish
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check the packages
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: python3 tools/publish.py --check --out out
+
+  publish:
+    name: Publish to hpak.ouncebrew.org
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Build the repositories
+        run: python3 tools/publish.py --out out
+
+      # Packages are immutable: a version is never uploaded twice. The indexes
+      # change in place, so caches keep them for a minute only.
+      - name: Upload
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          R2_BUCKET: ${{ vars.R2_BUCKET }}
+        run: |
+          cd out
+          while read -r kind key; do
+              if [ "$kind" = immutable ]; then
+                  cache="public, max-age=31536000, immutable"
+              else
+                  cache="public, max-age=60"
+              fi
+              npx --yes wrangler@4 r2 object put "$R2_BUCKET/$key" --file "$key" \
+                  --cache-control "$cache" --remote
+          done < upload.txt

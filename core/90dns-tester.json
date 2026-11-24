@@ -1,0 +1,15 @@
+{
+  "name": "90dns-tester",
+  "version": "1.0.5",
+  "title": "90DNS Tester",
+  "author": "Nexrem and Souldbminer",
+  "description": "Test your 90DNS connection on Switch 2.",
+  "details": "Checks whether 90DNS/DNS blocking is working correctly.",
+  "license": "GPLv3",
+  "changelog": "1.0.5-Ounce release.",
+  "category": "Tools",
+  "url": "https://github.com/souldbminerr/90DNS-Tester",
+  "source": "https://github.com/souldbminerr/90DNS-Tester/releases/download/1.0.5-Ounce/Switch_90DNS_tester.nro",
+  "file": "Switch_90DNS_tester.nro",
+  "updated": "22/11/2026 21:06"
+}

@@ -1,0 +1,6 @@
+{
+  "repos": [
+    {"name": "Ouncebrew Core", "folder": "core"},
+    {"name": "Ouncebrew Community", "folder": "community"}
+  ]
+}

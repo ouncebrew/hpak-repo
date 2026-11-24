@@ -1,0 +1,14 @@
+{
+  "name": "force-internal-speaker",
+  "version": "1.0.0",
+  "title": "Force Internal Speaker",
+  "author": "Souldbminer, paulocode",
+  "description": "Force audio output through the Switch internal speakers.",
+  "details": "Switch 2 homebrew NRO to force internal speaker output.",
+  "changelog": "v1.0.0-ounce release.",
+  "category": "Tools",
+  "url": "https://github.com/souldbminerr/switch_internal_speakers_nro",
+  "source": "https://github.com/souldbminerr/switch_internal_speakers_nro/releases/download/v1.0.0-ounce/switch_internal_speakers_nro.nro",
+  "file": "switch_internal_speakers_nro.nro",
+  "updated": "22/11/2026 21:23"
+}
