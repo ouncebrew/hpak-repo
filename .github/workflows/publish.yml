@@ -3,8 +3,8 @@
 # Publishes the hpak repositories to https://hpak.ouncebrew.org (Cloudflare R2)
 # on a push to main that changes a package, and when run by hand. Pull requests
 # are checked: every package is validated and downloaded, nothing is uploaded.
-# Secret: CLOUDFLARE_API_TOKEN (R2 edit). Variables: CLOUDFLARE_ACCOUNT_ID,
-# R2_BUCKET.
+# Secret: CLOUDFLARE_API_TOKEN, an R2 token with Object Read & Write on the
+# bucket. Variables: CLOUDFLARE_ACCOUNT_ID, R2_BUCKET.
 name: Publish
 
 on:
@@ -44,24 +44,36 @@ jobs:
       - name: Build the repositories
         run: python3 tools/publish.py --out out
 
-      # Fails here, with Cloudflare's answer, when the token is not valid.
-      - name: Check the token
+      # The token is limited to one bucket, so the upload uses R2's S3 interface.
+      # Cloudflare derives its S3 credentials from the token: the access key ID
+      # is the token's ID and the secret is the SHA-256 of the token's value.
+      # The step fails here, with Cloudflare's answer, when the token is not valid.
+      - name: S3 credentials from the token
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          curl -sS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-              "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/tokens/verify" |
-              jq -e '{success, status: .result.status, errors: [.errors[].message]}'
+          verify=$(curl -sS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/tokens/verify")
+          echo "$verify" | jq -e '{success, status: .result.status, errors: [.errors[].message]}'
+          echo "$verify" | jq -e '.success and .result.status == "active"' > /dev/null
+          secret=$(printf '%s' "$CLOUDFLARE_API_TOKEN" | sha256sum | cut -d' ' -f1)
+          echo "::add-mask::$secret"
+          echo "AWS_ACCESS_KEY_ID=$(echo "$verify" | jq -r .result.id)" >> "$GITHUB_ENV"
+          echo "AWS_SECRET_ACCESS_KEY=$secret" >> "$GITHUB_ENV"
 
       # Packages are immutable: a version is never uploaded twice. The indexes
       # change in place, so caches keep them for a minute only.
       - name: Upload
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           R2_BUCKET: ${{ vars.R2_BUCKET }}
+          AWS_DEFAULT_REGION: auto
+          # R2 does not take the checksum headers that newer AWS CLIs send by default.
+          AWS_REQUEST_CHECKSUM_CALCULATION: when_required
+          AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
         run: |
+          endpoint="https://$CLOUDFLARE_ACCOUNT_ID.r2.cloudflarestorage.com"
           cd out
           while read -r kind key; do
               if [ "$kind" = immutable ]; then
@@ -69,6 +81,7 @@ jobs:
               else
                   cache="public, max-age=60"
               fi
-              npx --yes wrangler@4 r2 object put "$R2_BUCKET/$key" --file "$key" \
-                  --cache-control "$cache" --remote
+              aws s3 cp "$key" "s3://$R2_BUCKET/$key" --endpoint-url "$endpoint" \
+                  --cache-control "$cache" --only-show-errors
+              echo "uploaded $key"
           done < upload.txt
