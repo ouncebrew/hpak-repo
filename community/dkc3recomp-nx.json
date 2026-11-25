@@ -1,0 +1,21 @@
+{
+  "name": "dkc3recomp-nx",
+  "version": "0.0.5.0",
+  "title": "Donkey Kong Country 3",
+  "author": "Souldbminer, elliottate",
+  "description": "A recompiled and enhanced version of DKC3",
+  "details": "Donkey Kong Country 3: Dixie Kong's Double Trouble is a 1996 platform game developed by Rare and published by Nintendo for the Super Nintendo Entertainment System. This recompilation adds some enhancements upon the game, primarily support for Widescreen. This recompilation requires a copy of your own game placed in sdmc:/switch/dkc3/rom.sfc",
+  "license": "MIT",
+  "changelog": "0.0.5.0: Initial release for Ounce (HPAK).",
+  "category": "Games",
+  "url": "https://github.com/souldbminerr/DKC3Recomp-NX/",
+  "source": "https://github.com/souldbminerr/DKC3Recomp-NX/releases/download/0.0.5-2/dkc3-ounce.nro",
+  "file": "dkc3-ounce.nro",
+  "updated": "25/11/2026 21:44",
+  "userDeletion": [
+    "sdmc:/switch/dkc3/"
+  ],
+  "dependencies": { 
+    "sdl3": "3.4.x.x" 
+  }
+}
