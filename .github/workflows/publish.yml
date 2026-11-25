@@ -44,6 +44,16 @@ jobs:
       - name: Build the repositories
         run: python3 tools/publish.py --out out
 
+      # Fails here, with Cloudflare's answer, when the token is not valid.
+      - name: Check the token
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          curl -sS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/tokens/verify" |
+              jq -e '{success, status: .result.status, errors: [.errors[].message]}'
+
       # Packages are immutable: a version is never uploaded twice. The indexes
       # change in place, so caches keep them for a minute only.
       - name: Upload
