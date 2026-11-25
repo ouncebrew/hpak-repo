@@ -114,6 +114,10 @@ def apply_release(repo, package, now, assets, remote, new_version, updated_hint)
         for field in LIST_FIELDS:
             value = remote.get(field)
             if isinstance(value, list) and all(isinstance(x, str) for x in value):
+                # Upstream sometimes omits the sdmc: prefix; without it the
+                # package fails publish validation, so normalize plain /abs paths.
+                value = [("sdmc:" + v) if v.startswith("/") and not v.startswith("sdmc:/") else v
+                         for v in value]
                 if value != package.get(field):
                     print(f"[update] {name}.{field}")
                     package[field] = value

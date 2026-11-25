@@ -11,6 +11,7 @@
   "url": "https://github.com/souldbminerr/DKC3Recomp-NX/",
   "source": "https://github.com/souldbminerr/DKC3Recomp-NX/releases/latest/download/dkc3-ounce.nro",
   "file": "dkc3-ounce.nro",
+  "path": "sdmc:/switch/dkc3/",
   "updated": "25/11/2026 21:44",
   "userDeletion": [
     "sdmc:/switch/dkc3/"
