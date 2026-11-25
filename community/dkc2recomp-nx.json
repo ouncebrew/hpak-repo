@@ -4,19 +4,20 @@
   "title": "Donkey Kong Country 2",
   "author": "Souldbminer, elliottate",
   "description": "A recompiled and enhanced version of DKC2",
-  "details": "Donkey Kong Country 2: Diddy's Kong Quest is a 1995 platform game developed by Rare and published by Nintendo for the Super Nintendo Entertainment System. This recompilation adds some enhancements upon the game, primarily support for Widescreen. This recompilation requires a copy of your own game placed in sdmc:/switch/dkc3/rom.sfc",
+  "details": "Donkey Kong Country 2: Diddy's Kong Quest is a 1995 platform game developed by Rare and published by Nintendo for the Super Nintendo Entertainment System. This recompilation adds some enhancements upon the game, primarily support for Widescreen. This recompilation requires a copy of your own game placed in sdmc:/switch/dkc2/rom.sfc",
   "license": "MIT",
   "changelog": "0.0.5.0: Initial release for Ounce (HPAK).",
   "category": "Games",
   "url": "https://github.com/souldbminerr/DKC2Recomp-NX/",
-  "source": "https://github.com/souldbminerr/DKC2Recomp-NX/releases/download/0.0.5-2/dkc2-ounce.nro",
+  "source": "https://github.com/souldbminerr/DKC2Recomp-NX/releases/latest/download/dkc2-ounce.nro",
   "file": "dkc2-ounce.nro",
   "updated": "25/11/2026 21:39",
   "userDeletion": [
     "sdmc:/switch/dkc2/"
   ],
-  "dependencies": { 
+  "dependencies": {
     "sdl3": "3.4.x.x",
     "drako3d": "x.x.x"
-  }
+  },
+  "requiredDeletion": []
 }

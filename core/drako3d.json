@@ -10,7 +10,9 @@
   "category": "Libraries",
   "url": "https://github.com/ouncebrew/drako3d/",
   "path": "sdmc:/kaihen/lib/",
-  "source": "https://github.com/ouncebrew/drako3d/releases/download/0.5.0/libdrako3d.so.1",
+  "source": "https://github.com/ouncebrew/drako3d/releases/latest/download/libdrako3d.so.1",
   "file": "libdrako3d.so.1",
-  "updated": "24/11/2026 12:00"
+  "updated": "24/11/2026 12:00",
+  "requiredDeletion": [],
+  "userDeletion": []
 }

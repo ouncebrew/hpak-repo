@@ -4,8 +4,9 @@
 
 Each repository is a folder of this git repository (core/, community/) with
 one JSON file per package and its icon in icons/. A package file names one
-fixed upstream file (`source`): a release asset of a specific tag, never a
-"latest" link. This script downloads each new package once, records its
+upstream file (`source`): a release asset of a specific tag, or a
+"latest" link, which this script pins to the concrete asset URL at build
+time. This script downloads each new package once, records its
 SHA-256 and size, and writes:
 
   OUT/repos.json                                     the repositories
@@ -74,6 +75,35 @@ def fetch_json_or_none(url):
         raise
 
 
+def resolve_latest_source(package):
+    """Turn a releases/latest source into the concrete asset URL of the
+    latest release, so published output is always immutable."""
+    source = package.get("source", "")
+    if "/releases/latest/" not in source:
+        return False
+    match = re.match(r"https://github\.com/([^/]+)/([^/]+?)(?:\.git)?/?$", package.get("url", ""))
+    if not match:
+        raise PackageError(f"{package.get('name', '?')}: cannot resolve latest link without a github.com url field")
+    owner, repo_name = match.groups()
+    request = urllib.request.Request(
+        f"https://api.github.com/repos/{owner}/{repo_name}/releases/latest",
+        headers={"User-Agent": USER_AGENT, "Accept": "application/vnd.github+json"})
+    token = os.environ.get("GITHUB_TOKEN")
+    if token:
+        request.add_header("Authorization", f"Bearer {token}")
+    try:
+        with urllib.request.urlopen(request, timeout=120) as response:
+            release = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        raise PackageError(f"{package.get('name', '?')}: cannot resolve latest release ({error})")
+    for asset in release.get("assets", []):
+        if asset.get("name") == package["file"] and asset.get("browser_download_url"):
+            package["source"] = asset["browser_download_url"]
+            print(f"[pin] {package.get('name')} -> {release.get('tag_name')}")
+            return True
+    raise PackageError(f"{package.get('name', '?')}: latest release has no {package['file']} asset")
+
+
 def check_sd_path(name, field, path):
     if not path.startswith("sdmc:/") or ".." in path or "\\" in path:
         raise PackageError(f"{name}: {field} entry {path!r} must be an sdmc:/ path without '..'")
@@ -90,7 +120,7 @@ def check_deletion_path(name, field, path):
             raise PackageError(f"{name}: {field} entry {path!r} is under {protected}")
 
 
-def load_package(repo, file_name):
+def load_package(repo, file_name, allow_latest=False):
     """Reads and checks one package file."""
     path = os.path.join(ROOT, repo, file_name)
     with open(path, encoding="utf-8") as f:
@@ -103,7 +133,7 @@ def load_package(repo, file_name):
         if not isinstance(package.get(field), str) or not pattern.match(package[field]):
             raise PackageError(f"{name}: {field} is missing or has characters that a path cannot have")
     source = package.get("source", "")
-    if not source.startswith("https://") or "/releases/latest/" in source:
+    if not source.startswith("https://") or ("/releases/latest/" in source and not allow_latest):
         raise PackageError(f"{name}: source must be an https URL of one fixed file, not a latest link")
     if package.get("updated") and not DATE_PATTERN.match(package["updated"]):
         raise PackageError(f"{name}: updated must be DD/MM/YYYY HH:MM")
@@ -135,7 +165,8 @@ def build_repository(repo, title, base_url, out, check_only, uploads):
     for file_name in sorted(os.listdir(os.path.join(ROOT, repo))):
         if not file_name.endswith(".json"):
             continue
-        package = load_package(repo, file_name)
+        package = load_package(repo, file_name, allow_latest=True)
+        resolve_latest_source(package)
         name, version, file = package["name"], package["version"], package["file"]
         folder = f"{repo}/packages/{name}/{version}"
         previous = live_packages.get(name)

@@ -13,7 +13,8 @@
   "userDeletion": [
     "sdmc:/switch/openrct2/"
   ],
-  "source": "https://github.com/souldbminerr/OpenRCT2-Switch/releases/download/v1.0-ounce/openrct2.nro",
+  "source": "https://github.com/souldbminerr/OpenRCT2-Switch/releases/latest/download/openrct2.nro",
   "file": "openrct2.nro",
-  "updated": "11/11/2026 19:00"
+  "updated": "11/11/2026 19:00",
+  "requiredDeletion": []
 }

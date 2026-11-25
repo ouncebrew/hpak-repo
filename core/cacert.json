@@ -9,8 +9,13 @@
   "changelog": "2026.11.05: Mozilla CA store update (118 certificates).",
   "category": "Miscellaneous",
   "url": "https://curl.se/docs/caextract.html",
-  "path": "sdmc:/kaihen/lib/",
   "source": "https://curl.se/ca/cacert-2026-11-05.pem",
   "file": "cacert.pem",
-  "updated": "05/11/2026 04:12"
+  "path": "sdmc:/kaihen/lib/",
+  "updated": "05/11/2026 04:12",
+  "versionSource": {
+    "url": "https://curl.se/docs/caextract.html",
+    "pattern": "cacert-(\\d{4})-(\\d{2})-(\\d{2})\\.pem",
+    "sourceTemplate": "https://curl.se/ca/cacert-{0}-{1}-{2}.pem"
+  }
 }

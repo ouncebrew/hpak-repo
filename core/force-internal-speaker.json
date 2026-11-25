@@ -8,7 +8,8 @@
   "changelog": "v1.0.0-ounce release.",
   "category": "Tools",
   "url": "https://github.com/souldbminerr/switch_internal_speakers_nro",
-  "source": "https://github.com/souldbminerr/switch_internal_speakers_nro/releases/download/v1.0.0-ounce/switch_internal_speakers_nro.nro",
+  "source": "https://github.com/souldbminerr/switch_internal_speakers_nro/releases/latest/download/switch_internal_speakers_nro.nro",
   "file": "switch_internal_speakers_nro.nro",
-  "updated": "22/11/2026 21:23"
+  "updated": "22/11/2026 21:23",
+  "license": ""
 }

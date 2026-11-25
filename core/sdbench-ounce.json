@@ -9,7 +9,7 @@
   "changelog": "1.1.0: Improve benchmark relability and support both NX and OUNCE targets (S1/S2)\n1.0.0: Initial release",
   "category": "Tools",
   "url": "https://github.com/Horizon-OC/sdbench",
-  "source": "https://github.com/Horizon-OC/sdbench/releases/download/1.1.0/sdbench_ounce.nro",
+  "source": "https://github.com/Horizon-OC/sdbench/releases/latest/download/sdbench_ounce.nro",
   "file": "sdbench_ounce.nro",
   "updated": "22/11/2026 21:22"
 }

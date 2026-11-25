@@ -17,7 +17,8 @@
     "sdmc:/kaihen/lib/libouncevk.so.1",
     "sdmc:/kaihen/lib/libvulkan.so.1"
   ],
-  "source": "https://github.com/ouncebrew/ouncevk/releases/download/20261123.1/sdout.zip",
+  "source": "https://github.com/ouncebrew/ouncevk/releases/latest/download/sdout.zip",
   "file": "sdout.zip",
-  "updated": "23/11/2026 12:00"
+  "updated": "23/11/2026 12:00",
+  "userDeletion": []
 }
