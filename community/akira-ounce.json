@@ -1,6 +1,6 @@
 {
   "name": "akira-ounce",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "title": "Akira",
   "author": "xlanor, streetpea, kkwong, the chiaki-ng project",
   "description": "PS4 and PS5 Remote Play for the Switch 2.",
@@ -10,10 +10,11 @@
   "url": "https://github.com/chiaki-ng/akira-ounce",
   "source": "https://github.com/chiaki-ng/akira-ounce/releases/latest/download/akira.nro",
   "file": "akira.nro",
-  "updated": "25/11/2026 21:51",
-  "changelog": "Shows up as Akira in the homebrew menu and credits all authors.",
+  "updated": "26/11/2026 02:53",
+  "changelog": "reduced FEC recovery.",
   "dependencies": {},
   "userDeletion": [
     "sdmc:/switch/akira"
-  ]
+  ],
+  "requiredDeletion": []
 }
