@@ -1,0 +1,16 @@
+{
+  "name": "checkpoint-switch2",
+  "version": "v5.3.0-switch2-1",
+  "title": "Checkpoint",
+  "author": "Bernardo Giordano, FlagBrew; Switch 2 port by wowilookgood",
+  "description": "An unofficial Switch 2 build of Checkpoint, the save manager.",
+  "details": "Checkpoint backs up and restores save data. This is an unofficial build of Checkpoint 5.3.0 for a Switch 2 running kaiHEN, not an upstream release. It draws with OpenGL ES 3.\n\nIts working folder is /switch/Checkpoint. The built-in updater is off: it would install the Switch 1 build.\n\nReport Switch 2 problems in the fork's issues, not to upstream.",
+  "license": "GPL-3.0",
+  "changelog": "v5.3.0-switch2-1: first Switch 2 build, from Checkpoint 5.3.0.",
+  "category": "Tools",
+  "url": "https://github.com/wowilookgood/Checkpoint",
+  "source": "https://github.com/wowilookgood/Checkpoint/releases/latest/download/Checkpoint-hen.nro",
+  "file": "Checkpoint-hen.nro",
+  "updated": "14/11/2026 01:23",
+  "requiredDeletion": []
+}
