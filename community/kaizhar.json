@@ -1,0 +1,16 @@
+{
+  "name": "kaizhar",
+  "version": "2126.2-kaizhar3",
+  "title": "Kaizhar",
+  "author": "wowilookgood; Azahar by the Azahar Emulator Project",
+  "description": "An unofficial Switch 2 port of the Azahar 3DS emulator.",
+  "details": "Kaizhar runs your own 3DS game dumps on a Switch 2 running kaiHEN. No games are included.\n\nFeatures:\n- Five screen layouts, all drawn at 4x the 3DS's resolution\n- 120 Hz in handheld mode\n- Touch with a finger, a Joy-Con as a mouse, or the right stick as a pointer\n- Local wireless play through rooms\n- Online play through Pretendo, set up once with your own 3DS\n- Decrypted .cia files install from the title list\n\nPut your dumps in /switch/Kaizhar/roms. Report problems to Kaizhar's repository, not to the Azahar project.",
+  "license": "GPL-2.0-or-later",
+  "changelog": "2126.2-kaizhar3: local wireless play through rooms, online play through Pretendo, a Settings page, 120 Hz in handheld mode, every layout at 4x, smoother first launches.",
+  "category": "Emulation",
+  "url": "https://github.com/wowilookgood/kaizhar",
+  "source": "https://github.com/wowilookgood/kaizhar/releases/latest/download/kaizhar.nro",
+  "file": "kaizhar.nro",
+  "updated": "21/11/2026 11:08",
+  "requiredDeletion": []
+}
