@@ -1,6 +1,6 @@
 {
   "name": "dkc2recomp-nx",
-  "version": "0.0.5.0",
+  "version": "0.0.5.1",
   "title": "Donkey Kong Country 2",
   "author": "Souldbminer, elliottate",
   "description": "A recompiled and enhanced version of DKC2",
@@ -12,7 +12,7 @@
   "source": "https://github.com/souldbminerr/DKC2Recomp-NX/releases/latest/download/dkc2-ounce.nro",
   "file": "dkc2-ounce.nro",
   "path": "sdmc:/switch/dkc2/",
-  "updated": "25/11/2026 21:39",
+  "updated": "25/11/2026 12:00",
   "userDeletion": [
     "sdmc:/switch/dkc2/"
   ],
