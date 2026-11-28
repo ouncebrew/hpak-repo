@@ -1,6 +1,6 @@
 {
   "name": "akira-ounce",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "title": "Akira",
   "author": "xlanor, streetpea, kkwong, the chiaki-ng project",
   "description": "PS4 and PS5 Remote Play for the Switch 2.",
@@ -10,8 +10,8 @@
   "url": "https://github.com/chiaki-ng/akira-ounce",
   "source": "https://github.com/chiaki-ng/akira-ounce/releases/latest/download/akira.nro",
   "file": "akira.nro",
-  "updated": "26/11/2026 02:53",
-  "changelog": "reduced FEC recovery.",
+  "updated": "27/11/2026 23:52",
+  "changelog": "## Akira 1.0.4\r\n\r\nAkira for Switch 2 now updates itself, and ships in lockstep with Akira for Switch 1.\r\n\r\n- In-app updates: Akira checks for new releases, shows the release notes, and downloads and installs the update with a progress bar\r\n- Choose the codec and console art per console\r\n- Lower CPU load while streaming.\r\n- Cleaner exit\r\n- Removed the Button shapes accessibility option\r\n- Fixed a bug where hero art was ridiculously smol\r\n\r\n\r\n**Full Changelog**: https://github.com/chiaki-ng/akira-ounce/compare/v1.0.3...v1.0.4",
   "dependencies": {},
   "userDeletion": [
     "sdmc:/switch/akira"
