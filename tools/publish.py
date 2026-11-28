@@ -34,6 +34,7 @@ import shutil
 import sys
 import tempfile
 import urllib.error
+import urllib.parse
 import urllib.request
 import zipfile
 
@@ -75,6 +76,21 @@ def fetch_json_or_none(url):
         raise
 
 
+def github_api_json(path, what):
+    """GET a GitHub API path, returning parsed JSON. Fails loudly."""
+    request = urllib.request.Request(
+        f"https://api.github.com{path}",
+        headers={"User-Agent": USER_AGENT, "Accept": "application/vnd.github+json"})
+    token = os.environ.get("GITHUB_TOKEN")
+    if token:
+        request.add_header("Authorization", f"Bearer {token}")
+    try:
+        with urllib.request.urlopen(request, timeout=120) as response:
+            return json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        raise PackageError(f"{what}: GitHub API request failed ({error})")
+
+
 def resolve_latest_source(package):
     """Turn a releases/latest source into the concrete asset URL of the
     latest release, so published output is always immutable."""
@@ -102,6 +118,47 @@ def resolve_latest_source(package):
             print(f"[pin] {package.get('name')} -> {release.get('tag_name')}")
             return True
     raise PackageError(f"{package.get('name', '?')}: latest release has no {package['file']} asset")
+
+
+def upstream_package_version(package):
+    """Version from the release's own package.json, or None to keep the
+    repo file's version (non-GitHub sources, or releases without one).
+
+    Fails loudly when a package.json asset exists but carries no usable
+    version: publishing must never guess."""
+    name = package.get("name", "?")
+    match = re.match(r"https://github\.com/([^/]+)/([^/]+)/releases/download/(.+)/[^/]+$",
+                     package.get("source", "").split("?", 1)[0])
+    if not match:
+        return None
+    owner, repo_name, tag = match.groups()
+    try:
+        release = github_api_json(f"/repos/{owner}/{repo_name}/releases/tags/{urllib.parse.quote(tag, safe='')}",
+                                  f"{name} release {tag}")
+    except PackageError as error:
+        raise PackageError(f"{name}: cannot fetch release for tag {tag!r} ({error})")
+    if not isinstance(release, dict):
+        raise PackageError(f"{name}: unexpected release metadata for tag {tag!r}")
+    pkg_url = None
+    assets = release.get("assets", [])
+    if isinstance(assets, list):
+        for asset in assets:
+            if isinstance(asset, dict) and asset.get("name") == "package.json" and asset.get("browser_download_url"):
+                pkg_url = asset["browser_download_url"]
+                break
+    if pkg_url is None:
+        return None
+    try:
+        with urllib.request.urlopen(urllib.request.Request(pkg_url, headers={"User-Agent": USER_AGENT}), timeout=120) as response:
+            doc = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        raise PackageError(f"{name}: cannot download upstream package.json ({error})")
+    except (ValueError, UnicodeDecodeError) as error:
+        raise PackageError(f"{name}: upstream package.json is not valid JSON ({error})")
+    version = doc.get("version") if isinstance(doc, dict) else None
+    if not isinstance(version, str) or not version or not VERSION_PATTERN.match(version):
+        raise PackageError(f"{name}: upstream package.json has no usable \"version\" field")
+    return version
 
 
 def check_sd_path(name, field, path):
@@ -167,6 +224,9 @@ def build_repository(repo, title, base_url, out, check_only, uploads):
             continue
         package = load_package(repo, file_name, allow_latest=True)
         resolve_latest_source(package)
+        upstream_version = upstream_package_version(package)
+        if upstream_version is not None:
+            package["version"] = upstream_version
         name, version, file = package["name"], package["version"], package["file"]
         folder = f"{repo}/packages/{name}/{version}"
         previous = live_packages.get(name)
